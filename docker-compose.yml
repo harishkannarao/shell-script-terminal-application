@@ -15,3 +15,30 @@ services:
       main:
         aliases:
           - postgres-db
+  mysql-db:
+    container_name: mysql-db
+    image: "public.ecr.aws/docker/library/mysql:8.0-debian"
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=test-root"
+      - "MYSQL_DATABASE=test-database"
+      - "MYSQL_USER=test-user"
+      - "MYSQL_PASSWORD=test-password"
+    networks:
+      main:
+        aliases:
+          - mysql-db
+  rabbitmq:
+    container_name: rabbitmq
+    image: "public.ecr.aws/docker/library/rabbitmq:3-management-alpine"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=guest"
+      - "RABBITMQ_DEFAULT_PASS=guest"
+    networks:
+      main:
+        aliases:
+          - rabbitmq
