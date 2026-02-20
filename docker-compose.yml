@@ -1,0 +1,17 @@
+networks:
+  main:
+    name: docker-compose-local
+
+services:
+  postgres-db:
+    container_name: postgres-db
+    image: "public.ecr.aws/docker/library/postgres:16"
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=myuser"
+      - "POSTGRES_PASSWORD=superpassword"
+    networks:
+      main:
+        aliases:
+          - postgres-db
