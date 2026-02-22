@@ -23,6 +23,10 @@ Terminal application using schell script to manage services using docker compose
 
     docker compose -f docker-compose.yml down -v mysql-db rabbitmq
 
+##### Restart specific docker containers
+
+    docker compose -f docker-compose.yml restart mysql-db rabbitmq
+
 ##### List all containers with status
 
     docker compose -f docker-compose.yml ps --all
@@ -47,10 +51,18 @@ Terminal application using schell script to manage services using docker compose
 
     docker compose -f docker-compose.yml logs -t --tail all --follow --since 0s postgres-db rabbitmq
 
-#### Print/follow logs from single container
+##### Print/follow logs from single container
 
     docker logs -t -f postgres-db
 
-#### Print/follow new logs from specific container
+##### Print/follow new logs from specific container
 
     docker logs -t -f --since 0s postgres-db
+
+##### Remove/cleanup containers and volumes
+
+    docker compose -f docker-compose.yml rm -f -s -v
+
+##### Prune all images
+
+    docker image prune --all --force
