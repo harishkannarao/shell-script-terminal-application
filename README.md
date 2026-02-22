@@ -66,3 +66,7 @@ Terminal application using schell script to manage services using docker compose
 ##### Prune all images
 
     docker image prune --all --force
+
+##### Prune all volumes
+
+    docker system prune --all --volumes --force
