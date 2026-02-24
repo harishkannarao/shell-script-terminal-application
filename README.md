@@ -9,7 +9,7 @@ Terminal application using schell script to manage services using docker compose
     
 ##### Start all non-running docker containers
 
-    docker compose -f docker-compose.yml --env-file ./env_config/development.env --build -d
+    docker compose -f docker-compose.yml --env-file ./env_config/development.env up --build -d
 
 ##### Start specific docker containers
 
