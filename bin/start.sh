@@ -48,7 +48,7 @@ do
         pwd
     elif [[ $INPUT_OPTION -eq 3 ]]
     then
-        (cd .. && docker compose -f docker-compose.yml logs -t --tail all --follow)
+        sh -c "trap 'exit 0' INT; (cd .. && docker compose -f docker-compose.yml logs -t --tail all --follow)"
     elif [[ $INPUT_OPTION -eq 4 ]]
     then
         break
