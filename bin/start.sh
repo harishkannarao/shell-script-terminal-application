@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Make the script to abort if any command fails. Use set +e to change the behaviour and ignore failed command.
 set -e
@@ -12,7 +12,7 @@ echo "3) production"
 echo ""
 echo "Any other key to exit"
 echo ""
-read -p "Environment : " INPUT_ENVIRONMENT
+read -p "Select Environment : " INPUT_ENVIRONMENT
 
 ENVIRONMENT="development"
 if [[ $INPUT_ENVIRONMENT -eq 1 ]]
@@ -31,16 +31,26 @@ fi
 while :
 do
     echo ""
-    echo ""
     echo "**Options**"
     echo "Selected Environment: $ENVIRONMENT"
-    read -p "Enter two numbers ( -1 to quit, 0 to skip ) : " a b
-    if [[ $a -eq -1 ]]
+    echo ""
+    echo "1) Print timestamp"
+    echo "2) Show current directory"
+    echo "3) Print/Follow docker compose logs"
+    echo "4) Quit"
+    
+    read -p "Choose option : " INPUT_OPTION
+    if [[ $INPUT_OPTION -eq 1 ]]
+    then
+        sh -c 'trap "exit 0" INT; while :; do date; sleep 1; done'
+    elif [[ $INPUT_OPTION -eq 2 ]]
+    then
+        pwd
+    elif [[ $INPUT_OPTION -eq 3 ]]
+    then
+        (cd .. && docker compose -f docker-compose.yml logs -t --tail all --follow)
+    elif [[ $INPUT_OPTION -eq 4 ]]
     then
         break
-    elif [[ $a == 0 ]]
-    then
-        continue
     fi
-    echo "$a + $b" | bc
 done
