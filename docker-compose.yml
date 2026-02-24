@@ -5,7 +5,7 @@ networks:
 services:
   postgres-db:
     container_name: postgres-db
-    image: "public.ecr.aws/docker/library/postgres:16"
+    image: "public.ecr.aws/docker/library/postgres:${POSTGRES_VERSION}"
     ports:
       - "5432:5432"
     environment:
@@ -17,7 +17,7 @@ services:
           - postgres-db
   mysql-db:
     container_name: mysql-db
-    image: "public.ecr.aws/docker/library/mysql:8.0-debian"
+    image: "public.ecr.aws/docker/library/mysql:${MYSQL_VERSION}"
     ports:
       - "3306:3306"
     environment:
@@ -31,7 +31,7 @@ services:
           - mysql-db
   rabbitmq:
     container_name: rabbitmq
-    image: "public.ecr.aws/docker/library/rabbitmq:3-management-alpine"
+    image: "public.ecr.aws/docker/library/rabbitmq:${RABBITMQ_VERSION}"
     ports:
       - "5672:5672"
       - "15672:15672"
