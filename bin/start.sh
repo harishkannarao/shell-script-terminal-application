@@ -25,6 +25,8 @@ elif [[ $INPUT_ENVIRONMENT -eq 3 ]]
 then
     ENVIRONMENT="production"
 else
+    echo "Invalid environment: $INPUT_ENVIRONMENT"
+    echo "Exiting"
     exit 0
 fi
     
