@@ -36,21 +36,21 @@ do
     echo "**Options**"
     echo "Selected Environment: $ENVIRONMENT"
     echo ""
-    echo "1) Print timestamp"
-    echo "2) Show current directory"
-    echo "3) Print/Follow docker compose logs"
+    echo "1) Pull"
+    echo "2) Logs - All"
+    echo "3) Print timestamp"
     echo "4) Quit"
     
     read -p "Choose option : " INPUT_OPTION
     if [[ $INPUT_OPTION -eq 1 ]]
     then
-        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+        sh -c "trap 'exit 0' INT; ./docker_compose_pull.sh $ENVIRONMENT"
     elif [[ $INPUT_OPTION -eq 2 ]]
     then
-        pwd
+        sh -c "trap 'exit 0' INT; ./docker_compose_logs_all.sh $ENVIRONMENT"
     elif [[ $INPUT_OPTION -eq 3 ]]
     then
-        sh -c "trap 'exit 0' INT; ./docker_compose_logs_all.sh"
+        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
     elif [[ $INPUT_OPTION -eq 4 ]]
     then
         break

@@ -5,4 +5,4 @@ set -e
 
 ENVIRONMENT="$1"
 
-(cd .. && docker compose -f docker-compose.yml --env-file ./env_config/${ENVIRONMENT}.env logs -t --tail all --follow)
+(cd .. && docker compose -f docker-compose.yml --env-file ./env_config/${ENVIRONMENT}.env pull)
