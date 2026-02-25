@@ -37,9 +37,11 @@ do
     echo "Selected Environment: $ENVIRONMENT"
     echo ""
     echo "1) Pull"
-    echo "2) Logs - All"
-    echo "3) Print timestamp"
-    echo "4) Quit"
+    echo "2) Up - All"
+    echo "3) Up - Selected"
+    echo "4) Logs - All"
+    echo "5) Print timestamp"
+    echo "6) Quit"
     
     read -p "Choose option : " INPUT_OPTION
     if [[ $INPUT_OPTION -eq 1 ]]
@@ -47,11 +49,21 @@ do
         sh -c "trap 'exit 0' INT; ./docker_compose_pull.sh $ENVIRONMENT"
     elif [[ $INPUT_OPTION -eq 2 ]]
     then
-        sh -c "trap 'exit 0' INT; ./docker_compose_logs_all.sh $ENVIRONMENT"
+        sh -c "trap 'exit 0' INT; ./docker_compose_up_all.sh $ENVIRONMENT"
     elif [[ $INPUT_OPTION -eq 3 ]]
     then
-        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+        ./docker_compose_list_container_names.sh $ENVIRONMENT
+        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        read -ra INPUT_CONTAINER_NAMES
+        ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
+        sh -c "trap 'exit 0' INT; ./docker_compose_up_selected.sh ${ARGUMENT_STRING}"
     elif [[ $INPUT_OPTION -eq 4 ]]
+    then
+        sh -c "trap 'exit 0' INT; ./docker_compose_logs_all.sh $ENVIRONMENT"
+    elif [[ $INPUT_OPTION -eq 5 ]]
+    then
+        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+    elif [[ $INPUT_OPTION -eq 6 ]]
     then
         break
     else
