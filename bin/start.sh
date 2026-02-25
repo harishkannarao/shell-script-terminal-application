@@ -42,7 +42,7 @@ do
     read -p "Choose option : " INPUT_OPTION
     if [[ $INPUT_OPTION -eq 1 ]]
     then
-        sh -c 'trap "exit 0" INT; while :; do date; sleep 1; done'
+        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
     elif [[ $INPUT_OPTION -eq 2 ]]
     then
         pwd
@@ -52,5 +52,7 @@ do
     elif [[ $INPUT_OPTION -eq 4 ]]
     then
         break
+    else
+        echo "Invalid input: ${INPUT_OPTION}"
     fi
 done
