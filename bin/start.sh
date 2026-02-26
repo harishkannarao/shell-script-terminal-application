@@ -41,9 +41,13 @@ do
     echo "3) Up - Selected"
     echo "4) Down - All"
     echo "5) Down - Selected"
-    echo "6) Logs - All"
-    echo "7) Print timestamp"
-    echo "8) Quit"
+    echo "6) Restart - Selected"
+    echo "7) Status - All"
+    echo "8) Names - All"
+    echo "9) Logs - All"
+    echo "10) Logs - Selected"
+    echo "11) Print timestamp"
+    echo "12) Quit"
     
     read -p "Choose option : " INPUT_OPTION
     if [[ $INPUT_OPTION -eq 1 ]]
@@ -71,11 +75,31 @@ do
         sh -c "trap 'exit 0' INT; ./docker_compose_down_selected.sh ${ARGUMENT_STRING}"
     elif [[ $INPUT_OPTION -eq 6 ]]
     then
-        sh -c "trap 'exit 0' INT; ./docker_compose_logs_all.sh $ENVIRONMENT"
+        ./docker_compose_list_container_names.sh $ENVIRONMENT
+        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        read -ra INPUT_CONTAINER_NAMES
+        ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
+        sh -c "trap 'exit 0' INT; ./docker_compose_restart_selected.sh ${ARGUMENT_STRING}"
     elif [[ $INPUT_OPTION -eq 7 ]]
     then
-        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+        sh -c "trap 'exit 0' INT; ./docker_compose_status_all.sh $ENVIRONMENT"
     elif [[ $INPUT_OPTION -eq 8 ]]
+    then
+        sh -c "trap 'exit 0' INT; ./docker_compose_list_container_names.sh $ENVIRONMENT"
+    elif [[ $INPUT_OPTION -eq 9 ]]
+    then
+        sh -c "trap 'exit 0' INT; ./docker_compose_logs_all.sh $ENVIRONMENT"
+    elif [[ $INPUT_OPTION -eq 10 ]]
+    then
+        ./docker_compose_list_container_names.sh $ENVIRONMENT
+        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        read -ra INPUT_CONTAINER_NAMES
+        ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
+        sh -c "trap 'exit 0' INT; ./docker_compose_logs_selected.sh ${ARGUMENT_STRING}"
+    elif [[ $INPUT_OPTION -eq 11 ]]
+    then
+        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+    elif [[ $INPUT_OPTION -eq 12 ]]
     then
         break
     else
