@@ -105,4 +105,7 @@ do
     else
         echo "Invalid input: ${INPUT_OPTION}"
     fi
+    echo ""
+    read -n 1 -s -r -p "Command completed. Press any key to view options..."
+    echo ""
 done
