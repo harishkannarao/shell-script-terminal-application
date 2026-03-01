@@ -46,8 +46,12 @@ do
     echo "8) Names - All"
     echo "9) Logs - All"
     echo "10) Logs - Selected"
-    echo "11) Print timestamp"
-    echo "12) Quit"
+    echo "11) Logs - All (New)"
+    echo "12) Logs - Selected (New)"
+    echo "13) Basic cleanup"
+    echo "14) Full cleanup"
+    echo "15) Print timestamp"
+    echo "16) Quit"
     
     read -p "Choose option : " INPUT_OPTION
     if [[ $INPUT_OPTION -eq 1 ]]
@@ -98,8 +102,24 @@ do
         sh -c "trap 'exit 0' INT; ./docker_compose_logs_selected.sh ${ARGUMENT_STRING}"
     elif [[ $INPUT_OPTION -eq 11 ]]
     then
-        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+        sh -c "trap 'exit 0' INT; ./docker_compose_logs_all_new.sh $ENVIRONMENT"
     elif [[ $INPUT_OPTION -eq 12 ]]
+    then
+        ./docker_compose_list_container_names.sh $ENVIRONMENT
+        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        read -ra INPUT_CONTAINER_NAMES
+        ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
+        sh -c "trap 'exit 0' INT; ./docker_compose_logs_selected_new.sh ${ARGUMENT_STRING}"
+    elif [[ $INPUT_OPTION -eq 13 ]]
+    then
+        sh -c "trap 'exit 0' INT; ./docker_compose_basic_cleanup.sh $ENVIRONMENT"
+    elif [[ $INPUT_OPTION -eq 14 ]]
+    then
+        sh -c "trap 'exit 0' INT; ./docker_compose_full_cleanup.sh $ENVIRONMENT"
+    elif [[ $INPUT_OPTION -eq 15 ]]
+    then
+        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+    elif [[ $INPUT_OPTION -eq 16 ]]
     then
         break
     else
