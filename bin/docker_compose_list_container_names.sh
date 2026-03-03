@@ -5,4 +5,4 @@ set -e
 
 ENVIRONMENT="$1"
 
-(cd .. && docker compose -f docker-compose.yml --env-file ./env_config/${ENVIRONMENT}.env config --services)
+(cd .. && docker compose -f docker-compose.yml --env-file ./env_config/${ENVIRONMENT}.env config --services | sort)
