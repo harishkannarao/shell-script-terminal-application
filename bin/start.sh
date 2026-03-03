@@ -4,31 +4,8 @@
 set -e
 
 echo "--- BASH INTERACTIVE DASHBOARD ---"
-echo "**Select Environment**"
-echo ""
-echo "1) development"
-echo "2) staging"
-echo "3) production"
-echo ""
-echo "Any other key to exit"
-echo ""
-read -p "Select Environment : " INPUT_ENVIRONMENT
 
 ENVIRONMENT="development"
-if [[ $INPUT_ENVIRONMENT -eq 1 ]]
-then
-    ENVIRONMENT="development"
-elif [[ $INPUT_ENVIRONMENT -eq 2 ]]
-then
-    ENVIRONMENT="staging"
-elif [[ $INPUT_ENVIRONMENT -eq 3 ]]
-then
-    ENVIRONMENT="production"
-else
-    echo "Invalid environment: $INPUT_ENVIRONMENT"
-    echo "Exiting"
-    exit 0
-fi
     
 while :
 do
@@ -50,8 +27,9 @@ do
     echo "12) Logs - Selected (New) (./docker_compose_logs_selected_new.sh $ENVIRONMENT mysql-db rabbitmq)"
     echo "13) Basic cleanup (./docker_compose_basic_cleanup.sh $ENVIRONMENT)"
     echo "14) Full cleanup (./docker_compose_full_cleanup.sh $ENVIRONMENT)"
-    echo "15) Print timestamp"
-    echo "16) Quit"
+    echo "15) Change Environment"
+    echo "16) Print timestamp"
+    echo "17) Quit"
     
     read -p "Choose option : " INPUT_OPTION
     if [[ $INPUT_OPTION -eq 1 ]]
@@ -118,8 +96,29 @@ do
         sh -c "trap 'exit 0' INT; ./docker_compose_full_cleanup.sh $ENVIRONMENT"
     elif [[ $INPUT_OPTION -eq 15 ]]
     then
-        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+        echo "Select Environment"
+        echo ""
+        echo "1) development"
+        echo "2) staging"
+        echo "3) production"
+        echo ""
+        read -p "Select Environment : " INPUT_ENVIRONMENT
+        if [[ $INPUT_ENVIRONMENT -eq 1 ]]
+        then
+            ENVIRONMENT="development"
+        elif [[ $INPUT_ENVIRONMENT -eq 2 ]]
+        then
+            ENVIRONMENT="staging"
+        elif [[ $INPUT_ENVIRONMENT -eq 3 ]]
+        then
+            ENVIRONMENT="production"
+        else
+            echo "Invalid environment: $INPUT_ENVIRONMENT"
+        fi
     elif [[ $INPUT_OPTION -eq 16 ]]
+    then
+        sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
+    elif [[ $INPUT_OPTION -eq 17 ]]
     then
         break
     else
