@@ -1,6 +1,10 @@
 # shell-script-terminal-application
 Terminal application using schell script to manage services using docker compose for development and local end-to-end testing
 
+### Start interactive shell app
+
+    (cd bin && ./start.sh)
+
 ### Docker compose commands
 
 ##### Pull the latest images of docker containers
