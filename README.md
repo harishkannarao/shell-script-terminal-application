@@ -3,7 +3,9 @@ Terminal application using schell script to manage services using docker compose
 
 ### Start interactive shell app
 
-    (cd bin && ./start.sh)
+    cd bin
+    
+    ./start.sh
 
 ### Docker compose commands
 
