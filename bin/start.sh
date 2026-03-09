@@ -6,6 +6,8 @@ set -e
 echo "--- BASH INTERACTIVE DASHBOARD ---"
 
 ENVIRONMENT="development"
+# Getting first 2 container names from the list as space separated string for generating description
+SAMPLE_CONTAINER_NAMES=$(./docker_compose_list_container_names.sh $ENVIRONMENT | sed '1,2!d' | xargs)
     
 while :
 do
@@ -15,16 +17,16 @@ do
     echo ""
     echo "1) Pull (./docker_compose_pull.sh $ENVIRONMENT)"
     echo "2) Up - All (./docker_compose_up_all.sh $ENVIRONMENT)"
-    echo "3) Up - Selected (./docker_compose_up_selected.sh $ENVIRONMENT mysql-db rabbitmq)"
+    echo "3) Up - Selected (./docker_compose_up_selected.sh $ENVIRONMENT $SAMPLE_CONTAINER_NAMES)"
     echo "4) Down - All (./docker_compose_down_all.sh $ENVIRONMENT)"
-    echo "5) Down - Selected (./docker_compose_down_selected.sh $ENVIRONMENT mysql-db rabbitmq)"
-    echo "6) Restart - Selected (./docker_compose_restart_selected.sh $ENVIRONMENT mysql-db rabbitmq)"
+    echo "5) Down - Selected (./docker_compose_down_selected.sh $ENVIRONMENT $SAMPLE_CONTAINER_NAMES)"
+    echo "6) Restart - Selected (./docker_compose_restart_selected.sh $ENVIRONMENT $SAMPLE_CONTAINER_NAMES)"
     echo "7) Status - All (./docker_compose_status_all.sh $ENVIRONMENT)"
     echo "8) Names - All (./docker_compose_list_container_names.sh $ENVIRONMENT)"
     echo "9) Logs - All (./docker_compose_logs_all.sh $ENVIRONMENT)"
-    echo "10) Logs - Selected (./docker_compose_logs_selected.sh $ENVIRONMENT mysql-db rabbitmq)"
+    echo "10) Logs - Selected (./docker_compose_logs_selected.sh $ENVIRONMENT $SAMPLE_CONTAINER_NAMES)"
     echo "11) Logs - All (New) (./docker_compose_logs_all_new.sh $ENVIRONMENT)"
-    echo "12) Logs - Selected (New) (./docker_compose_logs_selected_new.sh $ENVIRONMENT mysql-db rabbitmq)"
+    echo "12) Logs - Selected (New) (./docker_compose_logs_selected_new.sh $ENVIRONMENT $SAMPLE_CONTAINER_NAMES)"
     echo "13) Basic cleanup (./docker_compose_basic_cleanup.sh $ENVIRONMENT)"
     echo "14) Full cleanup (./docker_compose_full_cleanup.sh $ENVIRONMENT)"
     echo "15) Change Environment"
@@ -41,7 +43,7 @@ do
     elif [[ $INPUT_OPTION -eq 3 ]]
     then
         ./docker_compose_list_container_names.sh $ENVIRONMENT
-        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        printf "Enter container names separated by space (e.g., $SAMPLE_CONTAINER_NAMES): "
         read -ra INPUT_CONTAINER_NAMES
         ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
         sh -c "trap 'exit 0' INT; ./docker_compose_up_selected.sh ${ARGUMENT_STRING}"
@@ -51,14 +53,14 @@ do
     elif [[ $INPUT_OPTION -eq 5 ]]
     then
         ./docker_compose_list_container_names.sh $ENVIRONMENT
-        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        printf "Enter container names separated by space (e.g., $SAMPLE_CONTAINER_NAMES): "
         read -ra INPUT_CONTAINER_NAMES
         ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
         sh -c "trap 'exit 0' INT; ./docker_compose_down_selected.sh ${ARGUMENT_STRING}"
     elif [[ $INPUT_OPTION -eq 6 ]]
     then
         ./docker_compose_list_container_names.sh $ENVIRONMENT
-        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        printf "Enter container names separated by space (e.g., $SAMPLE_CONTAINER_NAMES): "
         read -ra INPUT_CONTAINER_NAMES
         ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
         sh -c "trap 'exit 0' INT; ./docker_compose_restart_selected.sh ${ARGUMENT_STRING}"
@@ -74,7 +76,7 @@ do
     elif [[ $INPUT_OPTION -eq 10 ]]
     then
         ./docker_compose_list_container_names.sh $ENVIRONMENT
-        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        printf "Enter container names separated by space (e.g., $SAMPLE_CONTAINER_NAMES): "
         read -ra INPUT_CONTAINER_NAMES
         ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
         sh -c "trap 'exit 0' INT; ./docker_compose_logs_selected.sh ${ARGUMENT_STRING}"
@@ -84,7 +86,7 @@ do
     elif [[ $INPUT_OPTION -eq 12 ]]
     then
         ./docker_compose_list_container_names.sh $ENVIRONMENT
-        printf "Enter container names separated by space (e.g., mysql-db rabbitmq): "
+        printf "Enter container names separated by space (e.g., $SAMPLE_CONTAINER_NAMES): "
         read -ra INPUT_CONTAINER_NAMES
         ARGUMENT_STRING="$ENVIRONMENT ${INPUT_CONTAINER_NAMES[@]}"
         sh -c "trap 'exit 0' INT; ./docker_compose_logs_selected_new.sh ${ARGUMENT_STRING}"
@@ -120,6 +122,7 @@ do
         sh -c 'trap "exit 0" INT; while true; do date; sleep 1; done'
     elif [[ $INPUT_OPTION -eq 17 ]]
     then
+        echo "Exiting.. Bye !!!"
         break
     else
         echo "Invalid input: ${INPUT_OPTION}"
